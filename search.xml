@@ -21,6 +21,21 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Promise</title>
+    <url>/2021/10/04/JavaScript/Promise/</url>
+    <content><![CDATA[<h1 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h1><span id="more"></span>
+<hr>
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>JavaScript</category>
+      </categories>
+      <tags>
+        <tag>js</tag>
+        <tag>promise</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>原生AJAX</title>
     <url>/2021/11/19/JavaScript/AJAX/</url>
     <content><![CDATA[<h1 id="AJAX"><a href="#AJAX" class="headerlink" title="AJAX"></a>AJAX</h1><span id="more"></span>
@@ -82,6 +97,94 @@
       </tags>
   </entry>
   <entry>
+    <title>uniapp之——高德获取定位</title>
+    <url>/2021/03/02/uniapp/uniapp%E4%B9%8B%E2%80%94%E2%80%94%E9%AB%98%E5%BE%B7%E8%8E%B7%E5%8F%96%E5%AE%9A%E4%BD%8D/</url>
+    <content><![CDATA[<h1 id="uniapp之——高德获取定位"><a href="#uniapp之——高德获取定位" class="headerlink" title="uniapp之——高德获取定位"></a>uniapp之——高德获取定位</h1><p>首先，强调！！！打包的时候，一定把配置文件里面定位的模块给勾选上，如果你用了地图组件就勾组件，只是用了定位就勾定位，没有勾选上的话只要调试基座能够获取到定位，打包后是获取不到的。</p>
+<span id="more"></span>
+<hr>
+<h2 id="一、注册高德账号，开通申请WebAPI的key值"><a href="#一、注册高德账号，开通申请WebAPI的key值" class="headerlink" title="一、注册高德账号，开通申请WebAPI的key值"></a>一、注册高德账号，开通申请WebAPI的key值</h2><p><img data-src="https://img.imgdb.cn/item/603e4212360785be5452bdcd.png" alt="1"></p>
+<p><img data-src="https://img.imgdb.cn/item/603e4239360785be5452d0cb.png" alt="2"></p>
+<p><img data-src="https://img.imgdb.cn/item/603e42bd360785be54530c43.png" alt="3"></p>
+<h2 id="二、代码案例"><a href="#二、代码案例" class="headerlink" title="二、代码案例"></a>二、代码案例</h2>  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//思路：利用uni.getLocation获取经纬度定位，再用高德的webAPI将经纬度你解析成地址</span><br><span class="line">uni.getLocation(&#123;</span><br><span class="line">	success(res)&#123;</span><br><span class="line">		console.log(&quot;res: &quot;, res)</span><br><span class="line">		uni.request(&#123;</span><br><span class="line">			url: `https://restapi.amap.com/v3/geocode/regeo?key=你的webAPIkey值&amp;location=$&#123;res.longitude&#125;,$&#123;res.latitude&#125;`,</span><br><span class="line">			success(res)&#123;</span><br><span class="line">				console.log(res)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;,</span><br><span class="line">	fail(err)&#123;</span><br><span class="line">		uni.showModal(&#123;</span><br><span class="line">			title:`定位失败：$&#123;JSON.stringify(err)&#125;`,</span><br><span class="line">			icon: &#x27;none&#x27;</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、申请安卓应用的key值"><a href="#三、申请安卓应用的key值" class="headerlink" title="三、申请安卓应用的key值"></a>三、申请安卓应用的key值</h2><p><img data-src="https://img.imgdb.cn/item/603e434d360785be5453550a.png" alt="5"></p>
+<p><img data-src="https://img.imgdb.cn/item/603e4377360785be54536c43.png" alt="6"></p>
+<p>3.1 获取PackageName（别名和Android包名一致）</p>
+<p><img data-src="https://img.imgdb.cn/item/603e431e360785be54533d9a.png" alt="4"></p>
+<h2 id="三、生成Android签名证书-amp-获取HSA1"><a href="#三、生成Android签名证书-amp-获取HSA1" class="headerlink" title="三、生成Android签名证书 &amp; 获取HSA1"></a>三、生成Android签名证书 &amp; 获取HSA1</h2><p>先安装JavaJDK，再进入命令行工具</p>
+<p>调试版本使用 debug.keystore，命令为：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">keytool -list -v -keystore debug.keystore</span><br></pre></td></tr></table></figure>
+
+<p> 发布版本使用 apk 对应的 keystore，命令为：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">keytool -list -v -keystore apk的keystore</span><br></pre></td></tr></table></figure>
+
+<p>或者：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">keytool -genkey -alias testalias -keyalg RSA -keysize 2048 -validity 36500 -keystore test.keystore</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>testalias是证书别名，可修改为自己想设置的字符，建议使用英文字母和数字</li>
+<li>test.keystore是证书文件名称，可修改为自己想设置的文件名称，也可以指定完整文件路径</li>
+</ul>
+<p>回车后会提示：</p>
+<ul>
+<li>提示输入密钥库密码，调试版本默认密码是 android，发布版本的密码是为 apk 的 keystore 设置的密码。输入密钥后回车（如果没设置密码，可直接回车），此时可在控制台显示的信息中获取 SHA1 值，如下图所示：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Enter keystore password:  //输入证书文件密码，输入完成回车  </span><br><span class="line">Re-enter new password:   //再次输入证书文件密码，输入完成回车  </span><br><span class="line">What is your first and last name?  </span><br><span class="line">  [Unknown]:  //输入名字和姓氏，输入完成回车  </span><br><span class="line">What is the name of your organizational unit?  </span><br><span class="line">  [Unknown]:  //输入组织单位名称，输入完成回车  </span><br><span class="line">What is the name of your organization?  </span><br><span class="line">  [Unknown]:  //输入组织名称，输入完成回车  </span><br><span class="line">What is the name of your City or Locality?  </span><br><span class="line">  [Unknown]:  //输入城市或区域名称，输入完成回车  </span><br><span class="line">What is the name of your State or Province?  </span><br><span class="line">  [Unknown]:  //输入省/市/自治区名称，输入完成回车  </span><br><span class="line">What is the two-letter country code for this unit?  </span><br><span class="line">  [Unknown]:  //输入国家/地区代号（两个字母），中国为CN，输入完成回车  </span><br><span class="line">Is CN=XX, OU=XX, O=XX, L=XX, ST=XX, C=XX correct?  </span><br><span class="line">  [no]:  //确认上面输入的内容是否正确，输入y，回车  </span><br><span class="line"></span><br><span class="line">Enter key password for &lt;testalias&gt;  </span><br><span class="line">        (RETURN if same as keystore password):  //确认证书密码与证书文件密码一样（HBuilder|HBuilderX要求这两个密码一致），直接回车就可以</span><br></pre></td></tr></table></figure>
+
+<p>以上命令运行完成后就会生成证书，文件名为<code>test.keystore</code>。</p>
+<p><strong>注意：上述信息填写要规范，乱填有可能会影响应用上架应用市场。</strong></p>
+<h3 id="查看证书信息"><a href="#查看证书信息" class="headerlink" title="查看证书信息"></a>查看证书信息</h3><p>可以使用以下命令查看：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">keytool -list -v -keystore test.keystore  </span><br><span class="line">Enter keystore password: //输入密码，回车</span><br></pre></td></tr></table></figure>
+
+<p>会输出以下格式信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">复制代码Keystore type: PKCS12    </span><br><span class="line">Keystore provider: SUN    </span><br><span class="line"></span><br><span class="line">Your keystore contains 1 entry    </span><br><span class="line"></span><br><span class="line">Alias name: test    </span><br><span class="line">Creation date: 2019-10-28    </span><br><span class="line">Entry type: PrivateKeyEntry    </span><br><span class="line">Certificate chain length: 1    </span><br><span class="line">Certificate[1]:    </span><br><span class="line">Owner: CN=Tester, OU=Test, O=Test, L=HD, ST=BJ, C=CN    </span><br><span class="line">Issuer: CN=Tester, OU=Test, O=Test, L=HD, ST=BJ, C=CN    </span><br><span class="line">Serial number: 7dd12840    </span><br><span class="line">Valid from: Fri Jul 26 20:52:56 CST 2019 until: Sun Jul 02 20:52:56 CST 2119    </span><br><span class="line">Certificate fingerprints:    </span><br><span class="line">         MD5:  F9:F6:C8:1F:DB:AB:50:14:7D:6F:2C:4F:CE:E6:0A:A5    </span><br><span class="line">         SHA1: BB:AC:E2:2F:97:3B:18:02:E7:D6:69:A3:7A:28:EF:D2:3F:A3:68:E7    </span><br><span class="line">         SHA256: 24:11:7D:E7:36:12:BC:FE:AF:2A:6A:24:BD:04:4F:2E:33:E5:2D:41:96:5F:50:4D:74:17:7F:4F:E2:55:EB:26    </span><br><span class="line">Signature algorithm name: SHA256withRSA    </span><br><span class="line">Subject Public Key Algorithm: 2048-bit RSA key    </span><br><span class="line">Version: 3</span><br></pre></td></tr></table></figure>
+
+<p>其中证书指纹信息（Certificate fingerprints）：</p>
+<ul>
+<li>MD5<br>证书的MD5指纹信息（安全码MD5）</li>
+<li>SHA1<br>证书的SHA1指纹信息（安全码SHA1）</li>
+<li>SHA256<br>证书的SHA256指纹信息（安全码SHA245）</li>
+</ul>
+<h2 id="五、打包模块配置"><a href="#五、打包模块配置" class="headerlink" title="五、打包模块配置"></a>五、打包模块配置</h2><p><img data-src="https://img.imgdb.cn/item/603e43a3360785be5453833b.png" alt="7"></p>
+<p>appkey用从高德申请到的。</p>
+<h2 id="六、打包"><a href="#六、打包" class="headerlink" title="六、打包"></a>六、打包</h2><ol>
+<li>Andriond包名要和刚刚的PackageName一样</li>
+<li>选择自有证书</li>
+<li>证书别名可以通过上面的命令查看</li>
+<li>证书密钥是刚刚申请时的密钥</li>
+<li>文件用上面生成的证书文件</li>
+</ol>
+<p><img data-src="https://img.imgdb.cn/item/603e431e360785be54533d9a.png" alt="8"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>[1] <a href="https://developer.amap.com/faq/android/map-sdk/create-project/43112">如何获取SHA1</a></li>
+<li>[2] <a href="https://ask.dcloud.net.cn/article/35777">Android平台签名证书(.keystore)生成指南</a></li>
+<li>[3] [高德web服务API](</li>
+</ul>
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>uniapp</category>
+      </categories>
+      <tags>
+        <tag>uniapp</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python-基础</title>
+    <url>/2021/01/25/python/python%E7%AC%94%E8%AE%B01.24/</url>
+    <content><![CDATA[<h1 id="python-基础"><a href="#python-基础" class="headerlink" title="python-基础"></a>python-基础</h1><span id="more"></span>
+<hr>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 类似于java的Scanner</span></span><br><span class="line">title = <span class="built_in">input</span>(<span class="string">&quot;提示&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 字符串 * 数字，相当于重复了十次</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>万金油reduce的 9 种使用场景</title>
     <url>/2021/09/15/JavaScript/%E4%B8%87%E9%87%91%E6%B2%B9reduce%E7%9A%84%209%20%E7%A7%8D%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/</url>
     <content><![CDATA[<h1 id="万金油reduce的-9-种使用场景"><a href="#万金油reduce的-9-种使用场景" class="headerlink" title="万金油reduce的 9 种使用场景"></a>万金油reduce的 9 种使用场景</h1><span id="more"></span>
@@ -110,18 +213,34 @@
       </tags>
   </entry>
   <entry>
-    <title>Promise</title>
-    <url>/2021/10/04/JavaScript/Promise/</url>
-    <content><![CDATA[<h1 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h1><span id="more"></span>
+    <title>uni组件之——webview与APP之间的通讯</title>
+    <url>/2021/03/01/uniapp/uni%E7%BB%84%E4%BB%B6%E4%B9%8B%E2%80%94%E2%80%94webview%E4%B8%8EAPP%E4%B9%8B%E9%97%B4%E7%9A%84%E9%80%9A%E8%AE%AF/</url>
+    <content><![CDATA[<h1 id="uni组件之——webview与APP之间的通讯"><a href="#uni组件之——webview与APP之间的通讯" class="headerlink" title="uni组件之——webview与APP之间的通讯"></a>uni组件之——webview与APP之间的通讯</h1><p>首先，让我们来谈谈应用的业务场景。大伙的业务场景是什么样我不知道，我来谈谈我踩坑时的业务场景。</p>
+<p>老板：我们有个移动端的网页项目，但是为了唬客户，我们需要把这个网页打包成ios端和安卓端的app，页面中有一个需要调用摄像头的拍照签到功能。</p>
+<p>我内心活动：ok，uni + webview没跑了，但是webview是不能直接调用手机的摄像头的，他的逻辑大概是，点击网页的签到按钮触发一个事件，事件给app发送一个我要使用手机摄像头的需求，然后再uni中收到了信号，去调起手机的摄像头。</p>
+<p>所以，搞明白了业务场景，不管三七二十一，先上案例，看看最简单的demo咋实现。</p>
+<span id="more"></span>
 <hr>
+<h2 id="html页面："><a href="#html页面：" class="headerlink" title="html页面："></a>html页面：</h2><p>首先模拟一个网页，我们就用一个静态的html网页就好。webview要访问本地静态页面的话，静态页面是需要放在static目录底下的，在这我们命名为index.html</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;zh&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>网页实时向APP发送消息<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- uni 的 SDK，必须引用。 --&gt;</span>  </span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span> <span class="attr">src</span>=<span class="string">&quot;https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.1.5.2.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 微信 JS-SDK 如果不需要兼容小程序，则无需引用此 JS 文件。 --&gt;</span>  </span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span> <span class="attr">src</span>=<span class="string">&quot;https://res.wx.qq.com/open/js/jweixin-1.4.0.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">        <span class="comment">// 在引用依赖的文件后，需要在 HTML 中监听 UniAppJSBridgeReady 事件触发后，才能安全调用 uni 的 API。</span></span></span><br><span class="line"><span class="javascript">		<span class="built_in">document</span>.addEventListener(<span class="string">&#x27;UniAppJSBridgeReady&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">		    uni.getEnv(<span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;  </span></span><br><span class="line"><span class="javascript">		        <span class="built_in">console</span>.log(<span class="string">&#x27;当前环境：&#x27;</span> + <span class="built_in">JSON</span>.stringify(res));  </span></span><br><span class="line"><span class="javascript">		    &#125;);</span></span><br><span class="line"><span class="javascript">        	<span class="comment">//向APP发送消息</span></span></span><br><span class="line"><span class="javascript">        	uni.postMessage(&#123;</span></span><br><span class="line"><span class="javascript">                <span class="attr">data</span>: &#123;</span></span><br><span class="line"><span class="javascript">                    <span class="attr">action</span>: <span class="string">&#x27;message&#x27;</span></span></span><br><span class="line"><span class="javascript">                &#125;</span></span><br><span class="line"><span class="javascript">            &#125;);</span></span><br><span class="line"><span class="javascript">            <span class="comment">//接收APP发送过来的消息</span></span></span><br><span class="line"><span class="javascript">            <span class="function"><span class="title">handleMessage</span>(<span class="params">evt</span>)</span> &#123;  </span></span><br><span class="line"><span class="javascript">                <span class="built_in">console</span>.log(<span class="string">&#x27;接收到的消息：&#x27;</span> + <span class="built_in">JSON</span>.stringify(evt.detail.data));  </span></span><br><span class="line"><span class="javascript">            &#125;  </span></span><br><span class="line"><span class="javascript">		&#125;);</span></span><br><span class="line"><span class="javascript">	</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="uni页面："><a href="#uni页面：" class="headerlink" title="uni页面："></a>uni页面：</h2><p>这里为index.nvue页面(注意这个nvue，跟vue页面是有差别的，后面就是踩坑点之一)</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">	<span class="xml"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">&quot;webview-box&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">		<span class="tag">&lt;<span class="name">web-view</span> <span class="attr">ref</span>=<span class="string">&quot;webview&quot;</span> <span class="attr">class</span>=<span class="string">&quot;webview&quot;</span> <span class="attr">src</span>=<span class="string">&quot;../../static/index.html&quot;</span> @<span class="attr">onPostMessage</span>=<span class="string">&quot;handleMessage&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">web-view</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">	<span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">		<span class="function"><span class="title">data</span>(<span class="params"></span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">			<span class="keyword">return</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">				<span class="attr">camera</span>: <span class="literal">null</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">				<span class="attr">progress</span>: <span class="number">0</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">				<span class="attr">wv</span>: <span class="literal">null</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">			&#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">		&#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">		<span class="function"><span class="title">onLoad</span>(<span class="params"></span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">			<span class="keyword">const</span> self = <span class="built_in">this</span>;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">			<span class="comment">// #ifdef APP-PLUS  </span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">			<span class="keyword">let</span> currentWebview = getCurrentPages()[<span class="number">0</span>];</span></span></span><br><span class="line"><span class="javascript"><span class="xml">			<span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">				self.wv = currentWebview.$getAppWebview();</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                 <span class="comment">//调用下面函数</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">             	 <span class="built_in">this</span>.handlePostMessage(<span class="string">&quot;消息&quot;</span>);</span></span></span><br><span class="line"><span class="javascript"><span class="xml">			&#125;, <span class="number">1000</span>);</span></span></span><br><span class="line"><span class="javascript"><span class="xml">			<span class="comment">// #endif</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">		&#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">         <span class="function"><span class="title">mouted</span>(<span class="params"></span>)</span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">         &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">		<span class="attr">methods</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">			<span class="comment">// 接收h5页面发来的键值判断需要执行的操作</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">			<span class="function"><span class="title">handleMessage</span>(<span class="params">evt</span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">				<span class="built_in">console</span>.log(<span class="string">&quot;postMessage: &quot;</span>, evt)</span></span></span><br><span class="line"><span class="javascript"><span class="xml">			&#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="comment">// 获取到对应webview(关键)通过evalJs(注意大小写，如果不知道evalJ是什么，可自行百度) 执行网页的函数，可对其进行传参，完成与网页的通讯</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="function"><span class="title">handlePostMessage</span>(<span class="params">res</span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="built_in">this</span>.$refs.webview.evalJs(<span class="string">`handleMessage(<span class="subst">$&#123;res&#125;</span>)`</span>);</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">		&#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">	&#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></span></span><br><span class="line"><span class="css"><span class="xml">	<span class="selector-class">.webview-box</span> &#123;</span></span></span><br><span class="line"><span class="css"><span class="xml">		<span class="attribute">position</span>: absolute;</span></span></span><br><span class="line"><span class="css"><span class="xml">		<span class="attribute">left</span>: <span class="number">0px</span>;</span></span></span><br><span class="line"><span class="css"><span class="xml">		<span class="attribute">right</span>: <span class="number">0px</span>;</span></span></span><br><span class="line"><span class="css"><span class="xml">		<span class="attribute">top</span>: <span class="number">0px</span>;</span></span></span><br><span class="line"><span class="css"><span class="xml">		<span class="attribute">bottom</span>: <span class="number">0px</span>;</span></span></span><br><span class="line"><span class="css"><span class="xml">	&#125;</span></span></span><br><span class="line"><span class="css"><span class="xml"></span></span></span><br><span class="line"><span class="css"><span class="xml">	<span class="selector-class">.webview</span> &#123;</span></span></span><br><span class="line"><span class="css"><span class="xml">		<span class="attribute">flex</span>: <span class="number">1</span>;</span></span></span><br><span class="line"><span class="css"><span class="xml">	&#125;</span></span></span><br><span class="line"><span class="css"><span class="xml"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>​        好了，是不是觉得很简单，事实上也很简单，但是鄙人非出脑瘫，踩了两个巨坑。两个都是在uni的页面的，如果大伙也踩到的话，那恭喜了，看到了我。</p>
+<p>​        第一，我用的是nvue页面，nvue获取webview窗口的方式是与普通vue获取webview的方式不一样的，这一步非常关键，如果获取不正确就算你以下写的东西是正确的也没有效果，具体是什么原理我也没深究，以后懂了再更好了，先实现业务。具体获取方法看案例，自己console一下看看要获取的是哪个webview，因为如果大伙的项目是有自定义导航栏获取其他nuve组件的话也算是一个webview。</p>
+<p>​        第二个坑就是，一定要用在uni的webview组件上使用<code>@onPostMessage</code>这个方法进行消息的监听，我当时也不知道犯了什么病，我用的是message，老半天调不出。message只有在特定的情况下才会接收到网页的消息，比如你执行了返回或着其他的特定场景操作的时候，具体可以看官网给出的。踩坑记录就到这啦，希望能帮助到大伙。</p>
+<ul>
+<li>参考资料：[1] <a href="https://ask.dcloud.net.cn/article/35083">dcloud社区</a></li>
+</ul>
 ]]></content>
       <categories>
         <category>前端</category>
-        <category>JavaScript</category>
+        <category>uniapp</category>
       </categories>
       <tags>
-        <tag>js</tag>
-        <tag>promise</tag>
+        <tag>uniapp</tag>
+        <tag>webview</tag>
       </tags>
   </entry>
   <entry>
@@ -314,6 +433,40 @@
       </tags>
   </entry>
   <entry>
+    <title>VUE组件通讯之——provide/inject</title>
+    <url>/2021/03/02/vue/VUE%E7%BB%84%E4%BB%B6%E9%80%9A%E8%AE%AF%E4%B9%8B%E2%80%94%E2%80%94provideinject/</url>
+    <content><![CDATA[<h1 id="VUE组件通讯之——provide-inject"><a href="#VUE组件通讯之——provide-inject" class="headerlink" title="VUE组件通讯之——provide/inject"></a>VUE组件通讯之——provide/inject</h1><span id="more"></span>
+<hr>
+<h2 id="1-使用方法"><a href="#1-使用方法" class="headerlink" title="1.使用方法"></a>1.使用方法</h2><p>现有一个这样结构的组件：组件A &gt; 组件B &gt; 组件C</p>
+<h3 id="1-1-父组件（组件A）"><a href="#1-1-父组件（组件A）" class="headerlink" title="1.1 父组件（组件A）"></a>1.1 父组件（组件A）</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> componentB <span class="keyword">from</span> <span class="string">&#x27;./componentB&#x27;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  	<span class="attr">components</span>: &#123;</span><br><span class="line">      componentB</span><br><span class="line">    &#125;,</span><br><span class="line">		<span class="function"><span class="title">provide</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">      	<span class="keyword">return</span> &#123;</span><br><span class="line">      			<span class="attr">name</span>: <span class="built_in">this</span>.value</span><br><span class="line">    		&#125;	</span><br><span class="line">    &#125;,</span><br><span class="line">  	<span class="function"><span class="title">data</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  			<span class="keyword">return</span> &#123;</span><br><span class="line">          	<span class="attr">value</span>: <span class="string">&#x27;componmentA&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">		&#125;,</span><br><span class="line">    <span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      	setTimeOut(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">          	<span class="built_in">this</span>.value = <span class="string">&#x27;0&#x27;</span></span><br><span class="line">        &#125;, <span class="number">1000</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-子孙组件（组件C）"><a href="#1-2-子孙组件（组件C）" class="headerlink" title="1.2 子孙组件（组件C）"></a>1.2 子孙组件（组件C）</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">		<span class="attr">inject</span>: [<span class="string">&#x27;name&#x27;</span>],</span><br><span class="line">  	<span class="attr">computed</span>: &#123;</span><br><span class="line">      	<span class="function"><span class="title">name</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">          	<span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">      			<span class="keyword">return</span> <span class="built_in">this</span>.name</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当在父组件使用了<code>provide</code>后，父组件会把<code>provide</code>变量<code>name</code>向子组件进行派发，也就是说这个父组件底下的所有子组件都能通过<code>inject</code>注入父组件派发的变量，而不用一层一层的进行传递。</p>
+<ul>
+<li>知识点：provide/inject 注入的数据是<u>不可响应</u>的，除非是一个可被监听的对象</li>
+</ul>
+<h2 id="2-使用场景"><a href="#2-使用场景" class="headerlink" title="2. 使用场景"></a>2. 使用场景</h2><p>每个工程化项目基本都有一个叫<code>AP.vue</code>的根组件，里面一般都是承载我们的根路由，并没有其他的东西，并且他通常是被<code>main.js</code>入口文件引入，作为根节点去出现的，所以并不会根据我们的路由切换而重新渲染，这时候我们就可以通过它来使用<code>provide</code>将<code>App.vue</code>整个实例作为一个对象派发出去，从而达到不使用vuex也能对全局数据进行管理的作用</p>
+<h3 id="App-vue"><a href="#App-vue" class="headerlink" title="App.vue"></a>App.vue</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">		<span class="function"><span class="title">provide</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      	<span class="keyword">return</span> &#123;</span><br><span class="line">          	<span class="attr">app</span>: <span class="built_in">this</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  	<span class="function"><span class="title">data</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      	<span class="attr">userName</span>: <span class="string">&#x27;xiaoming&#x27;</span></span><br><span class="line">    &#125;,</span><br><span class="line">  	<span class="attr">methods</span>: &#123;</span><br><span class="line">      	<span class="function"><span class="title">changeUserName</span>(<span class="params">userName</span>)</span>&#123;</span><br><span class="line">          	<span class="built_in">this</span>.userName = userName</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Component-vue"><a href="#Component-vue" class="headerlink" title="Component.vue"></a>Component.vue</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">		<span class="attr">inject</span>: [<span class="string">&#x27;app&#x27;</span>],</span><br><span class="line">  	<span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      	<span class="built_in">console</span>.log(<span class="built_in">this</span>.app.userName)</span><br><span class="line">      	<span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">          	<span class="built_in">this</span>.app.changeUserName(<span class="string">&#x27;xiaohei&#x27;</span>);</span><br><span class="line">        &#125;, <span class="number">1000</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>这里的this就是当前App.vue的整个实例，而且是可响应的</li>
+</ul>
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>Vue</category>
+      </categories>
+      <tags>
+        <tag>vue</tag>
+        <tag>组件通信</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Vue可复用 &amp; 组合</title>
     <url>/2021/05/20/vue/4.%E5%8F%AF%E5%A4%8D%E7%94%A8%E6%80%A7%20&amp;%20%E7%BB%84%E5%90%88/</url>
     <content><![CDATA[<h1 id="Vue可复用-amp-组合"><a href="#Vue可复用-amp-组合" class="headerlink" title="Vue可复用 &amp; 组合"></a>Vue可复用 &amp; 组合</h1><span id="more"></span>
@@ -421,40 +574,6 @@
       </tags>
   </entry>
   <entry>
-    <title>VUE组件通讯之——provide/inject</title>
-    <url>/2021/03/02/vue/VUE%E7%BB%84%E4%BB%B6%E9%80%9A%E8%AE%AF%E4%B9%8B%E2%80%94%E2%80%94provideinject/</url>
-    <content><![CDATA[<h1 id="VUE组件通讯之——provide-inject"><a href="#VUE组件通讯之——provide-inject" class="headerlink" title="VUE组件通讯之——provide/inject"></a>VUE组件通讯之——provide/inject</h1><span id="more"></span>
-<hr>
-<h2 id="1-使用方法"><a href="#1-使用方法" class="headerlink" title="1.使用方法"></a>1.使用方法</h2><p>现有一个这样结构的组件：组件A &gt; 组件B &gt; 组件C</p>
-<h3 id="1-1-父组件（组件A）"><a href="#1-1-父组件（组件A）" class="headerlink" title="1.1 父组件（组件A）"></a>1.1 父组件（组件A）</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> componentB <span class="keyword">from</span> <span class="string">&#x27;./componentB&#x27;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  	<span class="attr">components</span>: &#123;</span><br><span class="line">      componentB</span><br><span class="line">    &#125;,</span><br><span class="line">		<span class="function"><span class="title">provide</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">      	<span class="keyword">return</span> &#123;</span><br><span class="line">      			<span class="attr">name</span>: <span class="built_in">this</span>.value</span><br><span class="line">    		&#125;	</span><br><span class="line">    &#125;,</span><br><span class="line">  	<span class="function"><span class="title">data</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  			<span class="keyword">return</span> &#123;</span><br><span class="line">          	<span class="attr">value</span>: <span class="string">&#x27;componmentA&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">		&#125;,</span><br><span class="line">    <span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      	setTimeOut(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">          	<span class="built_in">this</span>.value = <span class="string">&#x27;0&#x27;</span></span><br><span class="line">        &#125;, <span class="number">1000</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-2-子孙组件（组件C）"><a href="#1-2-子孙组件（组件C）" class="headerlink" title="1.2 子孙组件（组件C）"></a>1.2 子孙组件（组件C）</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">		<span class="attr">inject</span>: [<span class="string">&#x27;name&#x27;</span>],</span><br><span class="line">  	<span class="attr">computed</span>: &#123;</span><br><span class="line">      	<span class="function"><span class="title">name</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">          	<span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">      			<span class="keyword">return</span> <span class="built_in">this</span>.name</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>当在父组件使用了<code>provide</code>后，父组件会把<code>provide</code>变量<code>name</code>向子组件进行派发，也就是说这个父组件底下的所有子组件都能通过<code>inject</code>注入父组件派发的变量，而不用一层一层的进行传递。</p>
-<ul>
-<li>知识点：provide/inject 注入的数据是<u>不可响应</u>的，除非是一个可被监听的对象</li>
-</ul>
-<h2 id="2-使用场景"><a href="#2-使用场景" class="headerlink" title="2. 使用场景"></a>2. 使用场景</h2><p>每个工程化项目基本都有一个叫<code>AP.vue</code>的根组件，里面一般都是承载我们的根路由，并没有其他的东西，并且他通常是被<code>main.js</code>入口文件引入，作为根节点去出现的，所以并不会根据我们的路由切换而重新渲染，这时候我们就可以通过它来使用<code>provide</code>将<code>App.vue</code>整个实例作为一个对象派发出去，从而达到不使用vuex也能对全局数据进行管理的作用</p>
-<h3 id="App-vue"><a href="#App-vue" class="headerlink" title="App.vue"></a>App.vue</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">		<span class="function"><span class="title">provide</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      	<span class="keyword">return</span> &#123;</span><br><span class="line">          	<span class="attr">app</span>: <span class="built_in">this</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  	<span class="function"><span class="title">data</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      	<span class="attr">userName</span>: <span class="string">&#x27;xiaoming&#x27;</span></span><br><span class="line">    &#125;,</span><br><span class="line">  	<span class="attr">methods</span>: &#123;</span><br><span class="line">      	<span class="function"><span class="title">changeUserName</span>(<span class="params">userName</span>)</span>&#123;</span><br><span class="line">          	<span class="built_in">this</span>.userName = userName</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="Component-vue"><a href="#Component-vue" class="headerlink" title="Component.vue"></a>Component.vue</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">		<span class="attr">inject</span>: [<span class="string">&#x27;app&#x27;</span>],</span><br><span class="line">  	<span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      	<span class="built_in">console</span>.log(<span class="built_in">this</span>.app.userName)</span><br><span class="line">      	<span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">          	<span class="built_in">this</span>.app.changeUserName(<span class="string">&#x27;xiaohei&#x27;</span>);</span><br><span class="line">        &#125;, <span class="number">1000</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<ul>
-<li>这里的this就是当前App.vue的整个实例，而且是可响应的</li>
-</ul>
-]]></content>
-      <categories>
-        <category>前端</category>
-        <category>Vue</category>
-      </categories>
-      <tags>
-        <tag>vue</tag>
-        <tag>组件通信</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Vue派发器思想</title>
     <url>/2021/07/19/vue/Vue%E6%B4%BE%E5%8F%91%E5%99%A8%E6%80%9D%E6%83%B3/</url>
     <content><![CDATA[<h1 id="Vue派发器思想"><a href="#Vue派发器思想" class="headerlink" title="Vue派发器思想"></a>Vue派发器思想</h1><span id="more"></span>
@@ -500,6 +619,108 @@
       </tags>
   </entry>
   <entry>
+    <title>MarkDown的使用方法</title>
+    <url>/2019/04/27/%E5%85%B6%E4%BB%96/MarkDown%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<h1 id="MarkDown使用方法"><a href="#MarkDown使用方法" class="headerlink" title="MarkDown使用方法"></a>MarkDown使用方法</h1><span id="more"></span>
+<hr>
+<h1 id="“-”是一级标题"><a href="#“-”是一级标题" class="headerlink" title="“# ”是一级标题"></a>“# ”是一级标题</h1><h2 id="“-”是二级标题"><a href="#“-”是二级标题" class="headerlink" title="“## ”是二级标题"></a>“## ”是二级标题</h2><h3 id="“-”是三级标题"><a href="#“-”是三级标题" class="headerlink" title="“### ”是三级标题"></a>“### ”是三级标题</h3><ul>
+<li>“- ”是列表<br>  a “a ”是子列表</li>
+</ul>
+<hr>
+<p><a href="https://www.bilibili.com/video/av17653359/?p=11">参考文献</a></p>
+<hr>
+<h2 id="hello-world"><a href="#hello-world" class="headerlink" title="hello!world"></a>hello!world</h2><p><img data-src="https://s2.ax1x.com/2019/04/27/EuVfBV.md.jpg" alt="插入图片"></p>
+<p><em>斜体字</em></p>
+<p><strong>粗体字</strong></p>
+<p><code>&lt;h1&gt;单行代码格式&lt;/h1&gt;</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;div&gt;</span><br><span class="line">	&lt;h1&gt;多行代码格式&lt;/h1&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>分享 - markdown</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MacBook M1使用webstorm配置SVN</title>
+    <url>/2021/03/02/%E5%85%B6%E4%BB%96/MacBook%20M1%E4%BD%BF%E7%94%A8webstorm%E9%85%8D%E7%BD%AESVN/</url>
+    <content><![CDATA[<h1 id="MacBook-M1使用webstorm配置SVN"><a href="#MacBook-M1使用webstorm配置SVN" class="headerlink" title="MacBook M1使用webstorm配置SVN"></a>MacBook M1使用webstorm配置SVN</h1><span id="more"></span>
+<hr>
+<h2 id="一、安装homebrew"><a href="#一、安装homebrew" class="headerlink" title="一、安装homebrew"></a>一、安装homebrew</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/bin/zsh -c &quot;$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="二、安装SVN"><a href="#二、安装SVN" class="headerlink" title="二、安装SVN"></a>二、安装SVN</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">brew install subversion </span><br></pre></td></tr></table></figure>
+
+<h2 id="三、查看SVN安装的目录打开webstorm配置SVN"><a href="#三、查看SVN安装的目录打开webstorm配置SVN" class="headerlink" title="三、查看SVN安装的目录打开webstorm配置SVN"></a>三、查看SVN安装的目录打开webstorm配置SVN</h2><ol>
+<li>先查看SVN环境变量执行的路径</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">which svn</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>拿到执行可执行文件路径后，输入命令行打开可执行文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">open path</span><br></pre></td></tr></table></figure></li>
+<li><p>打开可执行文件后在上面可看到SVN真正的安装路径</p>
+<p>![image-20210302150138886](/Users/cenfuning/Library/Application Support/typora-user-images/image-20210302150138886.png)</p>
+</li>
+</ol>
+<h2 id="四、打开webstorm配置SVN"><a href="#四、打开webstorm配置SVN" class="headerlink" title="四、打开webstorm配置SVN"></a>四、打开webstorm配置SVN</h2><ol>
+<li><p>![image-20210302143610236](/Users/cenfuning/Library/Application Support/typora-user-images/image-20210302143610236.png)</p>
+</li>
+<li><p>粘贴上可执行文件的路径，记得顺便勾选上启用交互模式，方面后面使用SVN</p>
+<p>![image-20210302143725777](/Users/cenfuning/Library/Application Support/typora-user-images/image-20210302143725777.png)</p>
+</li>
+</ol>
+<h2 id="五、解决webstrom报错Some-errors-occurred-while-accessing-svn-working-copy-database的bug"><a href="#五、解决webstrom报错Some-errors-occurred-while-accessing-svn-working-copy-database的bug" class="headerlink" title="五、解决webstrom报错Some errors occurred while accessing svn working copy database的bug"></a>五、解决webstrom报错Some errors occurred while accessing svn working copy database的bug</h2><p>此时重启webstorm后可能会报这个错误，具体原因也不知道是什么，应该是webstorm的bug</p>
+<p><img data-src="https://segmentfault.com/img/bVcO76w/view" alt="preview"></p>
+<ol>
+<li><p>去下载一个官方的补丁包，下载地址：</p>
+<p><a href="https://repo1.maven.org/maven2/org/xerial/sqlite-jdbc/3.32.3.3/sqlite-jdbc-3.32.3.3.jar">https://repo1.maven.org/maven2/org/xerial/sqlite-jdbc/3.32.3.3/sqlite-jdbc-3.32.3.3.jar</a></p>
+</li>
+<li><p>将补丁包放置到webstorm下Contents/lib</p>
+<p>![image-20210302151243871](/Users/cenfuning/Library/Application Support/typora-user-images/image-20210302151243871.png)</p>
+</li>
+<li><p>找到lib文件夹，把补丁放进去，重启webstorm就大功告成啦！</p>
+<p>![image-20210302151344058](/Users/cenfuning/Library/Application Support/typora-user-images/image-20210302151344058.png)</p>
+</li>
+</ol>
+<p>参考：</p>
+<ul>
+<li>[1] <a href="https://www.jianshu.com/p/9082f56c67ed">Mac新安装SVN</a></li>
+<li>[2] <a href="https://www.cnblogs.com/liyihua/p/12753163.html">Mac 安装 brew</a></li>
+<li>[3] <a href="https://ask.zol.com.cn/x/7174459.html">linux安装svn在哪个目录</a></li>
+<li>[4] <a href="https://blog.csdn.net/hell_oword/article/details/113182301?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&dist_request_id=1328575.10320.16146655223639245&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control">CSND-Macbook m1环境配置终极版</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>Mac</tag>
+        <tag>SVN</tag>
+        <tag>其他</tag>
+        <tag>分享</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MarkDown语法</title>
+    <url>/2022/01/08/%E5%85%B6%E4%BB%96/MarkDown%E8%AF%AD%E6%B3%95/</url>
+    <content><![CDATA[<p><strong>MarkDown语法</strong></p>
+<span id="more"></span>
+<hr>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">MarkDown语法</span><br><span class="line"></span><br><span class="line"><span class="section">标题</span></span><br><span class="line"><span class="section">---------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="section"># 一级标题</span></span><br><span class="line"><span class="section">## 二级标题</span></span><br><span class="line"><span class="section">### 三级标题</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">样式</span></span><br><span class="line"><span class="section">---------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="emphasis">*斜体*</span> </span><br><span class="line"></span><br><span class="line"><span class="strong">**粗体**</span> </span><br><span class="line"></span><br><span class="line">==高亮==</span><br><span class="line"></span><br><span class="line">~~删除线~~</span><br><span class="line"></span><br><span class="line"><span class="quote">&gt; 引用</span></span><br><span class="line"></span><br><span class="line">H~2~O 下标</span><br><span class="line"></span><br><span class="line">2^10^ 上标</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">列表</span></span><br><span class="line"><span class="section">---------------------------</span></span><br><span class="line"></span><br><span class="line">无序列表</span><br><span class="line"><span class="bullet">-</span> Item</span><br><span class="line"><span class="bullet">  *</span> Item</span><br><span class="line"><span class="bullet">    +</span> Item</span><br><span class="line"></span><br><span class="line">有序列表</span><br><span class="line"><span class="bullet">1.</span> Item 1</span><br><span class="line"><span class="bullet">2.</span> Item 2</span><br><span class="line"><span class="bullet">3.</span> Item 3</span><br><span class="line"></span><br><span class="line">待办列表:</span><br><span class="line"><span class="bullet">-</span> [ ] Incomplete item</span><br><span class="line"><span class="bullet">-</span> [x] Complete item</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">链接</span></span><br><span class="line"><span class="section">---------------------------</span></span><br><span class="line"></span><br><span class="line">A [<span class="string">link</span>](<span class="link">http://example.com</span>).文字链接</span><br><span class="line"></span><br><span class="line">An image: ![<span class="string">Alt</span>](<span class="link">img.jpg</span>)图片链接</span><br><span class="line"></span><br><span class="line">A sized image: ![<span class="string">Alt</span>](<span class="link">img.jpg =60x50</span>)固定大小的图片</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">代码</span></span><br><span class="line"><span class="section">---------------------------</span></span><br><span class="line"></span><br><span class="line">单行代码</span><br><span class="line">Some <span class="code">`inline code`</span>.</span><br><span class="line"></span><br><span class="line">代码块</span><br><span class="line"><span class="code">```</span></span><br><span class="line"><span class="code">// A code block</span></span><br><span class="line"><span class="code">var foo = &#x27;bar&#x27;;</span></span><br><span class="line"><span class="code">```</span></span><br><span class="line"></span><br><span class="line">语言标注</span><br><span class="line"><span class="code">```javascript</span></span><br><span class="line"><span class="code">// An highlighted block</span></span><br><span class="line"><span class="code">var foo = &#x27;bar&#x27;;</span></span><br><span class="line"><span class="code">```</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">表格</span></span><br><span class="line"><span class="section">---------------------------</span></span><br><span class="line"></span><br><span class="line">Item     | Value</span><br><span class="line">-------- | -----</span><br><span class="line">Computer | $1600</span><br><span class="line">Phone    | $12</span><br><span class="line">Pipe     | $1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">| Column 1 | Column 2      |</span><br><span class="line">|:--------:| -------------:|</span><br><span class="line">| centered | right-aligned |</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">自定义列表</span></span><br><span class="line"><span class="section">--------</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+        <tag>分享</tag>
+        <tag>markdown</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Vue中的环境变量</title>
     <url>/2021/11/15/vue/vue%E4%B8%AD%E7%9A%84%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/</url>
     <content><![CDATA[<h1 id="Vue中的环境变量"><a href="#Vue中的环境变量" class="headerlink" title="Vue中的环境变量"></a>Vue中的环境变量</h1><span id="more"></span>
@@ -518,6 +739,52 @@
       <tags>
         <tag>vue</tag>
         <tag>工程化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo个人博客搭建</title>
+    <url>/2021/03/01/%E5%85%B6%E4%BB%96/hexo%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<h1 id="Hexo个人博客搭建"><a href="#Hexo个人博客搭建" class="headerlink" title="Hexo个人博客搭建"></a>Hexo个人博客搭建</h1><span id="more"></span>
+<hr>
+<h2 id="一、项目搭建-amp-初始化"><a href="#一、项目搭建-amp-初始化" class="headerlink" title="一、项目搭建&amp;初始化"></a>一、项目搭建&amp;初始化</h2><p>安装hexo框架</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+<p>初始化hexo项目</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo init hexo</span><br></pre></td></tr></table></figure>
+
+<p>安装项目依赖</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<p>项目目录结构</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── _config.yml  网站的配置信息，网页的大部分的参数在此配置。</span><br><span class="line">├── package.json</span><br><span class="line">├── scaffolds</span><br><span class="line">├── source       资源文件夹，是存放资源的地方。除 _posts 文件夹之外，开头命名为 _ (下划线)的文件 / 文件夹和隐藏的文件将会被忽略。Markdown 和 HTML 文件会被解析并放到 public 文件夹，而其他文件会被拷贝过去。</span><br><span class="line">|   ├── _drafts</span><br><span class="line">|   └── _posts</span><br><span class="line">└── themes       主题 文件夹。Hexo 会根据主题来生成静态页面。</span><br></pre></td></tr></table></figure>
+
+<p>运行项目</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo server</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、装修页面（换主题）"><a href="#二、装修页面（换主题）" class="headerlink" title="二、装修页面（换主题）"></a>二、装修页面（换主题）</h2><p>先去hexo官网的主题去找一个喜欢的主题，然后通过git clone到项目的跟目录下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install hexo-theme-next@latest </span><br></pre></td></tr></table></figure>
+
+<p>安装好后找到根目录下的<code>_config.yml</code>文件，找到<code>theme</code>配置，修改为<code>next</code>，然后就根据next官网的配置去改就好</p>
+<h2 id="三、引入动态背景"><a href="#三、引入动态背景" class="headerlink" title="三、引入动态背景"></a>三、引入动态背景</h2><p>参考canvas-nest官网</p>
+<h2 id="四、设置加载进度"><a href="#四、设置加载进度" class="headerlink" title="四、设置加载进度"></a>四、设置加载进度</h2><p>参考</p>
+<ul>
+<li><p>[2] <a href="https://hexo.io/zh-cn/docs/index.html">hexo官网</a></p>
+</li>
+<li><p>[2] <a href="https://theme-next.js.org/docs/getting-started/">NEXT官网</a></p>
+</li>
+<li><p>[3] <a href="https://github.com/theme-next/theme-next-canvas-nest">canvas-nest</a></p>
+</li>
+<li></li>
+</ul>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+        <tag>分享</tag>
+        <tag>hexo</tag>
+        <tag>个人博客搭建</tag>
       </tags>
   </entry>
   <entry>
@@ -583,24 +850,9 @@
         <category>工程化</category>
       </categories>
       <tags>
+        <tag>分享</tag>
         <tag>工程化</tag>
         <tag>webpack</tag>
-        <tag>分享</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>python-基础</title>
-    <url>/2021/01/25/python/python%E7%AC%94%E8%AE%B01.24/</url>
-    <content><![CDATA[<h1 id="python-基础"><a href="#python-基础" class="headerlink" title="python-基础"></a>python-基础</h1><span id="more"></span>
-<hr>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 类似于java的Scanner</span></span><br><span class="line">title = <span class="built_in">input</span>(<span class="string">&quot;提示&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 字符串 * 数字，相当于重复了十次</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -653,177 +905,6 @@
       </tags>
   </entry>
   <entry>
-    <title>MacBook M1使用webstorm配置SVN</title>
-    <url>/2021/03/02/%E5%85%B6%E4%BB%96/MacBook%20M1%E4%BD%BF%E7%94%A8webstorm%E9%85%8D%E7%BD%AESVN/</url>
-    <content><![CDATA[<h1 id="MacBook-M1使用webstorm配置SVN"><a href="#MacBook-M1使用webstorm配置SVN" class="headerlink" title="MacBook M1使用webstorm配置SVN"></a>MacBook M1使用webstorm配置SVN</h1><span id="more"></span>
-<hr>
-<h2 id="一、安装homebrew"><a href="#一、安装homebrew" class="headerlink" title="一、安装homebrew"></a>一、安装homebrew</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/bin/zsh -c &quot;$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)&quot;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="二、安装SVN"><a href="#二、安装SVN" class="headerlink" title="二、安装SVN"></a>二、安装SVN</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">brew install subversion </span><br></pre></td></tr></table></figure>
-
-<h2 id="三、查看SVN安装的目录打开webstorm配置SVN"><a href="#三、查看SVN安装的目录打开webstorm配置SVN" class="headerlink" title="三、查看SVN安装的目录打开webstorm配置SVN"></a>三、查看SVN安装的目录打开webstorm配置SVN</h2><ol>
-<li>先查看SVN环境变量执行的路径</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">which svn</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li><p>拿到执行可执行文件路径后，输入命令行打开可执行文件</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">open path</span><br></pre></td></tr></table></figure></li>
-<li><p>打开可执行文件后在上面可看到SVN真正的安装路径</p>
-<p>![image-20210302150138886](/Users/cenfuning/Library/Application Support/typora-user-images/image-20210302150138886.png)</p>
-</li>
-</ol>
-<h2 id="四、打开webstorm配置SVN"><a href="#四、打开webstorm配置SVN" class="headerlink" title="四、打开webstorm配置SVN"></a>四、打开webstorm配置SVN</h2><ol>
-<li><p>![image-20210302143610236](/Users/cenfuning/Library/Application Support/typora-user-images/image-20210302143610236.png)</p>
-</li>
-<li><p>粘贴上可执行文件的路径，记得顺便勾选上启用交互模式，方面后面使用SVN</p>
-<p>![image-20210302143725777](/Users/cenfuning/Library/Application Support/typora-user-images/image-20210302143725777.png)</p>
-</li>
-</ol>
-<h2 id="五、解决webstrom报错Some-errors-occurred-while-accessing-svn-working-copy-database的bug"><a href="#五、解决webstrom报错Some-errors-occurred-while-accessing-svn-working-copy-database的bug" class="headerlink" title="五、解决webstrom报错Some errors occurred while accessing svn working copy database的bug"></a>五、解决webstrom报错Some errors occurred while accessing svn working copy database的bug</h2><p>此时重启webstorm后可能会报这个错误，具体原因也不知道是什么，应该是webstorm的bug</p>
-<p><img data-src="https://segmentfault.com/img/bVcO76w/view" alt="preview"></p>
-<ol>
-<li><p>去下载一个官方的补丁包，下载地址：</p>
-<p><a href="https://repo1.maven.org/maven2/org/xerial/sqlite-jdbc/3.32.3.3/sqlite-jdbc-3.32.3.3.jar">https://repo1.maven.org/maven2/org/xerial/sqlite-jdbc/3.32.3.3/sqlite-jdbc-3.32.3.3.jar</a></p>
-</li>
-<li><p>将补丁包放置到webstorm下Contents/lib</p>
-<p>![image-20210302151243871](/Users/cenfuning/Library/Application Support/typora-user-images/image-20210302151243871.png)</p>
-</li>
-<li><p>找到lib文件夹，把补丁放进去，重启webstorm就大功告成啦！</p>
-<p>![image-20210302151344058](/Users/cenfuning/Library/Application Support/typora-user-images/image-20210302151344058.png)</p>
-</li>
-</ol>
-<p>参考：</p>
-<ul>
-<li>[1] <a href="https://www.jianshu.com/p/9082f56c67ed">Mac新安装SVN</a></li>
-<li>[2] <a href="https://www.cnblogs.com/liyihua/p/12753163.html">Mac 安装 brew</a></li>
-<li>[3] <a href="https://ask.zol.com.cn/x/7174459.html">linux安装svn在哪个目录</a></li>
-<li>[4] <a href="https://blog.csdn.net/hell_oword/article/details/113182301?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&dist_request_id=1328575.10320.16146655223639245&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control">CSND-Macbook m1环境配置终极版</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>分享</tag>
-        <tag>Mac</tag>
-        <tag>SVN</tag>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MarkDown的使用方法</title>
-    <url>/2019/04/27/%E5%85%B6%E4%BB%96/MarkDown%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<h1 id="MarkDown使用方法"><a href="#MarkDown使用方法" class="headerlink" title="MarkDown使用方法"></a>MarkDown使用方法</h1><span id="more"></span>
-<hr>
-<h1 id="“-”是一级标题"><a href="#“-”是一级标题" class="headerlink" title="“# ”是一级标题"></a>“# ”是一级标题</h1><h2 id="“-”是二级标题"><a href="#“-”是二级标题" class="headerlink" title="“## ”是二级标题"></a>“## ”是二级标题</h2><h3 id="“-”是三级标题"><a href="#“-”是三级标题" class="headerlink" title="“### ”是三级标题"></a>“### ”是三级标题</h3><ul>
-<li>“- ”是列表<br>  a “a ”是子列表</li>
-</ul>
-<hr>
-<p><a href="https://www.bilibili.com/video/av17653359/?p=11">参考文献</a></p>
-<hr>
-<h2 id="hello-world"><a href="#hello-world" class="headerlink" title="hello!world"></a>hello!world</h2><p><img data-src="https://s2.ax1x.com/2019/04/27/EuVfBV.md.jpg" alt="插入图片"></p>
-<p><em>斜体字</em></p>
-<p><strong>粗体字</strong></p>
-<p><code>&lt;h1&gt;单行代码格式&lt;/h1&gt;</code></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;div&gt;</span><br><span class="line">	&lt;h1&gt;多行代码格式&lt;/h1&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>分享 - markdown</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MarkDown语法</title>
-    <url>/2022/01/08/%E5%85%B6%E4%BB%96/MarkDown%E8%AF%AD%E6%B3%95/</url>
-    <content><![CDATA[<p><strong>MarkDown语法</strong></p>
-<span id="more"></span>
-<hr>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">MarkDown语法</span><br><span class="line"></span><br><span class="line"><span class="section">标题</span></span><br><span class="line"><span class="section">---------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="section"># 一级标题</span></span><br><span class="line"><span class="section">## 二级标题</span></span><br><span class="line"><span class="section">### 三级标题</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">样式</span></span><br><span class="line"><span class="section">---------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="emphasis">*斜体*</span> </span><br><span class="line"></span><br><span class="line"><span class="strong">**粗体**</span> </span><br><span class="line"></span><br><span class="line">==高亮==</span><br><span class="line"></span><br><span class="line">~~删除线~~</span><br><span class="line"></span><br><span class="line"><span class="quote">&gt; 引用</span></span><br><span class="line"></span><br><span class="line">H~2~O 下标</span><br><span class="line"></span><br><span class="line">2^10^ 上标</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">列表</span></span><br><span class="line"><span class="section">---------------------------</span></span><br><span class="line"></span><br><span class="line">无序列表</span><br><span class="line"><span class="bullet">-</span> Item</span><br><span class="line"><span class="bullet">  *</span> Item</span><br><span class="line"><span class="bullet">    +</span> Item</span><br><span class="line"></span><br><span class="line">有序列表</span><br><span class="line"><span class="bullet">1.</span> Item 1</span><br><span class="line"><span class="bullet">2.</span> Item 2</span><br><span class="line"><span class="bullet">3.</span> Item 3</span><br><span class="line"></span><br><span class="line">待办列表:</span><br><span class="line"><span class="bullet">-</span> [ ] Incomplete item</span><br><span class="line"><span class="bullet">-</span> [x] Complete item</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">链接</span></span><br><span class="line"><span class="section">---------------------------</span></span><br><span class="line"></span><br><span class="line">A [<span class="string">link</span>](<span class="link">http://example.com</span>).文字链接</span><br><span class="line"></span><br><span class="line">An image: ![<span class="string">Alt</span>](<span class="link">img.jpg</span>)图片链接</span><br><span class="line"></span><br><span class="line">A sized image: ![<span class="string">Alt</span>](<span class="link">img.jpg =60x50</span>)固定大小的图片</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">代码</span></span><br><span class="line"><span class="section">---------------------------</span></span><br><span class="line"></span><br><span class="line">单行代码</span><br><span class="line">Some <span class="code">`inline code`</span>.</span><br><span class="line"></span><br><span class="line">代码块</span><br><span class="line"><span class="code">```</span></span><br><span class="line"><span class="code">// A code block</span></span><br><span class="line"><span class="code">var foo = &#x27;bar&#x27;;</span></span><br><span class="line"><span class="code">```</span></span><br><span class="line"></span><br><span class="line">语言标注</span><br><span class="line"><span class="code">```javascript</span></span><br><span class="line"><span class="code">// An highlighted block</span></span><br><span class="line"><span class="code">var foo = &#x27;bar&#x27;;</span></span><br><span class="line"><span class="code">```</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">表格</span></span><br><span class="line"><span class="section">---------------------------</span></span><br><span class="line"></span><br><span class="line">Item     | Value</span><br><span class="line">-------- | -----</span><br><span class="line">Computer | $1600</span><br><span class="line">Phone    | $12</span><br><span class="line">Pipe     | $1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">| Column 1 | Column 2      |</span><br><span class="line">|:--------:| -------------:|</span><br><span class="line">| centered | right-aligned |</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">自定义列表</span></span><br><span class="line"><span class="section">--------</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>分享</tag>
-        <tag>其他</tag>
-        <tag>markdown</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hexo个人博客搭建</title>
-    <url>/2021/03/01/%E5%85%B6%E4%BB%96/hexo%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<h1 id="Hexo个人博客搭建"><a href="#Hexo个人博客搭建" class="headerlink" title="Hexo个人博客搭建"></a>Hexo个人博客搭建</h1><span id="more"></span>
-<hr>
-<h2 id="一、项目搭建-amp-初始化"><a href="#一、项目搭建-amp-初始化" class="headerlink" title="一、项目搭建&amp;初始化"></a>一、项目搭建&amp;初始化</h2><p>安装hexo框架</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-
-<p>初始化hexo项目</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo init hexo</span><br></pre></td></tr></table></figure>
-
-<p>安装项目依赖</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
-
-<p>项目目录结构</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── _config.yml  网站的配置信息，网页的大部分的参数在此配置。</span><br><span class="line">├── package.json</span><br><span class="line">├── scaffolds</span><br><span class="line">├── source       资源文件夹，是存放资源的地方。除 _posts 文件夹之外，开头命名为 _ (下划线)的文件 / 文件夹和隐藏的文件将会被忽略。Markdown 和 HTML 文件会被解析并放到 public 文件夹，而其他文件会被拷贝过去。</span><br><span class="line">|   ├── _drafts</span><br><span class="line">|   └── _posts</span><br><span class="line">└── themes       主题 文件夹。Hexo 会根据主题来生成静态页面。</span><br></pre></td></tr></table></figure>
-
-<p>运行项目</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo server</span><br></pre></td></tr></table></figure>
-
-<h2 id="二、装修页面（换主题）"><a href="#二、装修页面（换主题）" class="headerlink" title="二、装修页面（换主题）"></a>二、装修页面（换主题）</h2><p>先去hexo官网的主题去找一个喜欢的主题，然后通过git clone到项目的跟目录下</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install hexo-theme-next@latest </span><br></pre></td></tr></table></figure>
-
-<p>安装好后找到根目录下的<code>_config.yml</code>文件，找到<code>theme</code>配置，修改为<code>next</code>，然后就根据next官网的配置去改就好</p>
-<h2 id="三、引入动态背景"><a href="#三、引入动态背景" class="headerlink" title="三、引入动态背景"></a>三、引入动态背景</h2><p>参考canvas-nest官网</p>
-<h2 id="四、设置加载进度"><a href="#四、设置加载进度" class="headerlink" title="四、设置加载进度"></a>四、设置加载进度</h2><p>参考</p>
-<ul>
-<li><p>[2] <a href="https://hexo.io/zh-cn/docs/index.html">hexo官网</a></p>
-</li>
-<li><p>[2] <a href="https://theme-next.js.org/docs/getting-started/">NEXT官网</a></p>
-</li>
-<li><p>[3] <a href="https://github.com/theme-next/theme-next-canvas-nest">canvas-nest</a></p>
-</li>
-<li></li>
-</ul>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>分享</tag>
-        <tag>其他</tag>
-        <tag>hexo</tag>
-        <tag>个人博客搭建</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>应用常用命令行总汇</title>
-    <url>/2021/04/12/%E5%85%B6%E4%BB%96/%E5%BA%94%E7%94%A8%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%80%BB%E6%B1%87/</url>
-    <content><![CDATA[<h1 id="应用常用命令行总汇"><a href="#应用常用命令行总汇" class="headerlink" title="应用常用命令行总汇"></a>应用常用命令行总汇</h1><span id="more"></span>
-<hr>
-<h2 id="1-检测mac硬盘读取写入量"><a href="#1-检测mac硬盘读取写入量" class="headerlink" title="1. 检测mac硬盘读取写入量"></a>1. 检测mac硬盘读取写入量</h2><h3 id="打开S-M-A-R-T监控"><a href="#打开S-M-A-R-T监控" class="headerlink" title="打开S.M.A.R.T监控"></a>打开S.M.A.R.T监控</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">smartctl -s on disk0</span><br></pre></td></tr></table></figure>
-
-<h3 id="命令查看状态"><a href="#命令查看状态" class="headerlink" title="命令查看状态"></a>命令查看状态</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">smartctl -a disk0</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-git"><a href="#2-git" class="headerlink" title="2. git"></a>2. git</h2><h3 id="拉取远程分支内容"><a href="#拉取远程分支内容" class="headerlink" title="拉取远程分支内容"></a>拉取远程分支内容</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git fetch --all</span><br></pre></td></tr></table></figure>
-
-<h3 id="覆盖本地master分支"><a href="#覆盖本地master分支" class="headerlink" title="覆盖本地master分支"></a>覆盖本地master分支</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git reset --hard master</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>分享</tag>
-        <tag>Mac</tag>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>每日一题-19.04.25</title>
     <url>/2019/04/25/%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98/%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98-19-04-25/</url>
     <content><![CDATA[<p>My Metamorphosis<br>a打印出什么？为什么？</p>
@@ -870,6 +951,51 @@
       </tags>
   </entry>
   <entry>
+    <title>每日一题-19.04.29</title>
+    <url>/2019/04/29/%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98/%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98-19-04-29/</url>
+    <content><![CDATA[<p>My Metamorphosis<br>下面的代码运行结果是什么？</p>
+<span id="more"></span>
+<hr>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    var x = 1;</span><br><span class="line">    var y = 2;</span><br><span class="line">    function show() &#123;</span><br><span class="line">        var x = 3;</span><br><span class="line">        return &#123;</span><br><span class="line">            x: x,</span><br><span class="line">            fun: function(a,b) &#123;</span><br><span class="line">                x = a + b;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    var obj = show();</span><br><span class="line">    obj.fun(x,y);</span><br><span class="line">    console.log(obj.x);</span><br><span class="line">    console.log(x);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>结果：<br>3 1</p>
+<p>分析：<br>1、obj所得的是show函数的返回值，即return返回的对象，在调用obj的fun之后，obj这个对象的x被赋值为3；<br>2、最后一句console.log代码，输出的x是在全局作用域当中的x，因此返回的值应该是全局变量x（数字1）。</p>
+<hr>
+<p>参考文献：Duing</p>
+]]></content>
+      <categories>
+        <category>每天一题</category>
+      </categories>
+      <tags>
+        <tag>分享</tag>
+        <tag>每天进步一点点</tag>
+        <tag>每日一题</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>应用常用命令行总汇</title>
+    <url>/2021/04/12/%E5%85%B6%E4%BB%96/%E5%BA%94%E7%94%A8%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%80%BB%E6%B1%87/</url>
+    <content><![CDATA[<h1 id="应用常用命令行总汇"><a href="#应用常用命令行总汇" class="headerlink" title="应用常用命令行总汇"></a>应用常用命令行总汇</h1><span id="more"></span>
+<hr>
+<h2 id="1-检测mac硬盘读取写入量"><a href="#1-检测mac硬盘读取写入量" class="headerlink" title="1. 检测mac硬盘读取写入量"></a>1. 检测mac硬盘读取写入量</h2><h3 id="打开S-M-A-R-T监控"><a href="#打开S-M-A-R-T监控" class="headerlink" title="打开S.M.A.R.T监控"></a>打开S.M.A.R.T监控</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">smartctl -s on disk0</span><br></pre></td></tr></table></figure>
+
+<h3 id="命令查看状态"><a href="#命令查看状态" class="headerlink" title="命令查看状态"></a>命令查看状态</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">smartctl -a disk0</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-git"><a href="#2-git" class="headerlink" title="2. git"></a>2. git</h2><h3 id="拉取远程分支内容"><a href="#拉取远程分支内容" class="headerlink" title="拉取远程分支内容"></a>拉取远程分支内容</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git fetch --all</span><br></pre></td></tr></table></figure>
+
+<h3 id="覆盖本地master分支"><a href="#覆盖本地master分支" class="headerlink" title="覆盖本地master分支"></a>覆盖本地master分支</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git reset --hard master</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>Mac</tag>
+        <tag>其他</tag>
+        <tag>分享</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>每日一题-19.04.27</title>
     <url>/2019/04/27/%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98/%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98-19-04-27/</url>
     <content><![CDATA[<p>My Metamorphosis<br>函数形参与arguments的关系，以下代码运行结果是什么？</p>
@@ -911,132 +1037,6 @@
         <tag>分享</tag>
         <tag>每天进步一点点</tag>
         <tag>每日一题</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>每日一题-19.04.29</title>
-    <url>/2019/04/29/%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98/%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98-19-04-29/</url>
-    <content><![CDATA[<p>My Metamorphosis<br>下面的代码运行结果是什么？</p>
-<span id="more"></span>
-<hr>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    var x = 1;</span><br><span class="line">    var y = 2;</span><br><span class="line">    function show() &#123;</span><br><span class="line">        var x = 3;</span><br><span class="line">        return &#123;</span><br><span class="line">            x: x,</span><br><span class="line">            fun: function(a,b) &#123;</span><br><span class="line">                x = a + b;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    var obj = show();</span><br><span class="line">    obj.fun(x,y);</span><br><span class="line">    console.log(obj.x);</span><br><span class="line">    console.log(x);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-<hr>
-<p>结果：<br>3 1</p>
-<p>分析：<br>1、obj所得的是show函数的返回值，即return返回的对象，在调用obj的fun之后，obj这个对象的x被赋值为3；<br>2、最后一句console.log代码，输出的x是在全局作用域当中的x，因此返回的值应该是全局变量x（数字1）。</p>
-<hr>
-<p>参考文献：Duing</p>
-]]></content>
-      <categories>
-        <category>每天一题</category>
-      </categories>
-      <tags>
-        <tag>分享</tag>
-        <tag>每天进步一点点</tag>
-        <tag>每日一题</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>uniapp之——高德获取定位</title>
-    <url>/2021/03/02/uniapp/uniapp%E4%B9%8B%E2%80%94%E2%80%94%E9%AB%98%E5%BE%B7%E8%8E%B7%E5%8F%96%E5%AE%9A%E4%BD%8D/</url>
-    <content><![CDATA[<h1 id="uniapp之——高德获取定位"><a href="#uniapp之——高德获取定位" class="headerlink" title="uniapp之——高德获取定位"></a>uniapp之——高德获取定位</h1><p>首先，强调！！！打包的时候，一定把配置文件里面定位的模块给勾选上，如果你用了地图组件就勾组件，只是用了定位就勾定位，没有勾选上的话只要调试基座能够获取到定位，打包后是获取不到的。</p>
-<span id="more"></span>
-<hr>
-<h2 id="一、注册高德账号，开通申请WebAPI的key值"><a href="#一、注册高德账号，开通申请WebAPI的key值" class="headerlink" title="一、注册高德账号，开通申请WebAPI的key值"></a>一、注册高德账号，开通申请WebAPI的key值</h2><p><img data-src="https://img.imgdb.cn/item/603e4212360785be5452bdcd.png" alt="1"></p>
-<p><img data-src="https://img.imgdb.cn/item/603e4239360785be5452d0cb.png" alt="2"></p>
-<p><img data-src="https://img.imgdb.cn/item/603e42bd360785be54530c43.png" alt="3"></p>
-<h2 id="二、代码案例"><a href="#二、代码案例" class="headerlink" title="二、代码案例"></a>二、代码案例</h2>  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//思路：利用uni.getLocation获取经纬度定位，再用高德的webAPI将经纬度你解析成地址</span><br><span class="line">uni.getLocation(&#123;</span><br><span class="line">	success(res)&#123;</span><br><span class="line">		console.log(&quot;res: &quot;, res)</span><br><span class="line">		uni.request(&#123;</span><br><span class="line">			url: `https://restapi.amap.com/v3/geocode/regeo?key=你的webAPIkey值&amp;location=$&#123;res.longitude&#125;,$&#123;res.latitude&#125;`,</span><br><span class="line">			success(res)&#123;</span><br><span class="line">				console.log(res)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;,</span><br><span class="line">	fail(err)&#123;</span><br><span class="line">		uni.showModal(&#123;</span><br><span class="line">			title:`定位失败：$&#123;JSON.stringify(err)&#125;`,</span><br><span class="line">			icon: &#x27;none&#x27;</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<h2 id="三、申请安卓应用的key值"><a href="#三、申请安卓应用的key值" class="headerlink" title="三、申请安卓应用的key值"></a>三、申请安卓应用的key值</h2><p><img data-src="https://img.imgdb.cn/item/603e434d360785be5453550a.png" alt="5"></p>
-<p><img data-src="https://img.imgdb.cn/item/603e4377360785be54536c43.png" alt="6"></p>
-<p>3.1 获取PackageName（别名和Android包名一致）</p>
-<p><img data-src="https://img.imgdb.cn/item/603e431e360785be54533d9a.png" alt="4"></p>
-<h2 id="三、生成Android签名证书-amp-获取HSA1"><a href="#三、生成Android签名证书-amp-获取HSA1" class="headerlink" title="三、生成Android签名证书 &amp; 获取HSA1"></a>三、生成Android签名证书 &amp; 获取HSA1</h2><p>先安装JavaJDK，再进入命令行工具</p>
-<p>调试版本使用 debug.keystore，命令为：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">keytool -list -v -keystore debug.keystore</span><br></pre></td></tr></table></figure>
-
-<p> 发布版本使用 apk 对应的 keystore，命令为：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">keytool -list -v -keystore apk的keystore</span><br></pre></td></tr></table></figure>
-
-<p>或者：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">keytool -genkey -alias testalias -keyalg RSA -keysize 2048 -validity 36500 -keystore test.keystore</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>testalias是证书别名，可修改为自己想设置的字符，建议使用英文字母和数字</li>
-<li>test.keystore是证书文件名称，可修改为自己想设置的文件名称，也可以指定完整文件路径</li>
-</ul>
-<p>回车后会提示：</p>
-<ul>
-<li>提示输入密钥库密码，调试版本默认密码是 android，发布版本的密码是为 apk 的 keystore 设置的密码。输入密钥后回车（如果没设置密码，可直接回车），此时可在控制台显示的信息中获取 SHA1 值，如下图所示：</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Enter keystore password:  //输入证书文件密码，输入完成回车  </span><br><span class="line">Re-enter new password:   //再次输入证书文件密码，输入完成回车  </span><br><span class="line">What is your first and last name?  </span><br><span class="line">  [Unknown]:  //输入名字和姓氏，输入完成回车  </span><br><span class="line">What is the name of your organizational unit?  </span><br><span class="line">  [Unknown]:  //输入组织单位名称，输入完成回车  </span><br><span class="line">What is the name of your organization?  </span><br><span class="line">  [Unknown]:  //输入组织名称，输入完成回车  </span><br><span class="line">What is the name of your City or Locality?  </span><br><span class="line">  [Unknown]:  //输入城市或区域名称，输入完成回车  </span><br><span class="line">What is the name of your State or Province?  </span><br><span class="line">  [Unknown]:  //输入省/市/自治区名称，输入完成回车  </span><br><span class="line">What is the two-letter country code for this unit?  </span><br><span class="line">  [Unknown]:  //输入国家/地区代号（两个字母），中国为CN，输入完成回车  </span><br><span class="line">Is CN=XX, OU=XX, O=XX, L=XX, ST=XX, C=XX correct?  </span><br><span class="line">  [no]:  //确认上面输入的内容是否正确，输入y，回车  </span><br><span class="line"></span><br><span class="line">Enter key password for &lt;testalias&gt;  </span><br><span class="line">        (RETURN if same as keystore password):  //确认证书密码与证书文件密码一样（HBuilder|HBuilderX要求这两个密码一致），直接回车就可以</span><br></pre></td></tr></table></figure>
-
-<p>以上命令运行完成后就会生成证书，文件名为<code>test.keystore</code>。</p>
-<p><strong>注意：上述信息填写要规范，乱填有可能会影响应用上架应用市场。</strong></p>
-<h3 id="查看证书信息"><a href="#查看证书信息" class="headerlink" title="查看证书信息"></a>查看证书信息</h3><p>可以使用以下命令查看：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">keytool -list -v -keystore test.keystore  </span><br><span class="line">Enter keystore password: //输入密码，回车</span><br></pre></td></tr></table></figure>
-
-<p>会输出以下格式信息：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">复制代码Keystore type: PKCS12    </span><br><span class="line">Keystore provider: SUN    </span><br><span class="line"></span><br><span class="line">Your keystore contains 1 entry    </span><br><span class="line"></span><br><span class="line">Alias name: test    </span><br><span class="line">Creation date: 2019-10-28    </span><br><span class="line">Entry type: PrivateKeyEntry    </span><br><span class="line">Certificate chain length: 1    </span><br><span class="line">Certificate[1]:    </span><br><span class="line">Owner: CN=Tester, OU=Test, O=Test, L=HD, ST=BJ, C=CN    </span><br><span class="line">Issuer: CN=Tester, OU=Test, O=Test, L=HD, ST=BJ, C=CN    </span><br><span class="line">Serial number: 7dd12840    </span><br><span class="line">Valid from: Fri Jul 26 20:52:56 CST 2019 until: Sun Jul 02 20:52:56 CST 2119    </span><br><span class="line">Certificate fingerprints:    </span><br><span class="line">         MD5:  F9:F6:C8:1F:DB:AB:50:14:7D:6F:2C:4F:CE:E6:0A:A5    </span><br><span class="line">         SHA1: BB:AC:E2:2F:97:3B:18:02:E7:D6:69:A3:7A:28:EF:D2:3F:A3:68:E7    </span><br><span class="line">         SHA256: 24:11:7D:E7:36:12:BC:FE:AF:2A:6A:24:BD:04:4F:2E:33:E5:2D:41:96:5F:50:4D:74:17:7F:4F:E2:55:EB:26    </span><br><span class="line">Signature algorithm name: SHA256withRSA    </span><br><span class="line">Subject Public Key Algorithm: 2048-bit RSA key    </span><br><span class="line">Version: 3</span><br></pre></td></tr></table></figure>
-
-<p>其中证书指纹信息（Certificate fingerprints）：</p>
-<ul>
-<li>MD5<br>证书的MD5指纹信息（安全码MD5）</li>
-<li>SHA1<br>证书的SHA1指纹信息（安全码SHA1）</li>
-<li>SHA256<br>证书的SHA256指纹信息（安全码SHA245）</li>
-</ul>
-<h2 id="五、打包模块配置"><a href="#五、打包模块配置" class="headerlink" title="五、打包模块配置"></a>五、打包模块配置</h2><p><img data-src="https://img.imgdb.cn/item/603e43a3360785be5453833b.png" alt="7"></p>
-<p>appkey用从高德申请到的。</p>
-<h2 id="六、打包"><a href="#六、打包" class="headerlink" title="六、打包"></a>六、打包</h2><ol>
-<li>Andriond包名要和刚刚的PackageName一样</li>
-<li>选择自有证书</li>
-<li>证书别名可以通过上面的命令查看</li>
-<li>证书密钥是刚刚申请时的密钥</li>
-<li>文件用上面生成的证书文件</li>
-</ol>
-<p><img data-src="https://img.imgdb.cn/item/603e431e360785be54533d9a.png" alt="8"></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li>[1] <a href="https://developer.amap.com/faq/android/map-sdk/create-project/43112">如何获取SHA1</a></li>
-<li>[2] <a href="https://ask.dcloud.net.cn/article/35777">Android平台签名证书(.keystore)生成指南</a></li>
-<li>[3] [高德web服务API](</li>
-</ul>
-]]></content>
-      <categories>
-        <category>前端</category>
-        <category>uniapp</category>
-      </categories>
-      <tags>
-        <tag>uniapp</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>uni组件之——webview与APP之间的通讯</title>
-    <url>/2021/03/01/uniapp/uni%E7%BB%84%E4%BB%B6%E4%B9%8B%E2%80%94%E2%80%94webview%E4%B8%8EAPP%E4%B9%8B%E9%97%B4%E7%9A%84%E9%80%9A%E8%AE%AF/</url>
-    <content><![CDATA[<h1 id="uni组件之——webview与APP之间的通讯"><a href="#uni组件之——webview与APP之间的通讯" class="headerlink" title="uni组件之——webview与APP之间的通讯"></a>uni组件之——webview与APP之间的通讯</h1><p>首先，让我们来谈谈应用的业务场景。大伙的业务场景是什么样我不知道，我来谈谈我踩坑时的业务场景。</p>
-<p>老板：我们有个移动端的网页项目，但是为了唬客户，我们需要把这个网页打包成ios端和安卓端的app，页面中有一个需要调用摄像头的拍照签到功能。</p>
-<p>我内心活动：ok，uni + webview没跑了，但是webview是不能直接调用手机的摄像头的，他的逻辑大概是，点击网页的签到按钮触发一个事件，事件给app发送一个我要使用手机摄像头的需求，然后再uni中收到了信号，去调起手机的摄像头。</p>
-<p>所以，搞明白了业务场景，不管三七二十一，先上案例，看看最简单的demo咋实现。</p>
-<span id="more"></span>
-<hr>
-<h2 id="html页面："><a href="#html页面：" class="headerlink" title="html页面："></a>html页面：</h2><p>首先模拟一个网页，我们就用一个静态的html网页就好。webview要访问本地静态页面的话，静态页面是需要放在static目录底下的，在这我们命名为index.html</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;zh&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>网页实时向APP发送消息<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- uni 的 SDK，必须引用。 --&gt;</span>  </span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span> <span class="attr">src</span>=<span class="string">&quot;https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.1.5.2.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 微信 JS-SDK 如果不需要兼容小程序，则无需引用此 JS 文件。 --&gt;</span>  </span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span> <span class="attr">src</span>=<span class="string">&quot;https://res.wx.qq.com/open/js/jweixin-1.4.0.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">        <span class="comment">// 在引用依赖的文件后，需要在 HTML 中监听 UniAppJSBridgeReady 事件触发后，才能安全调用 uni 的 API。</span></span></span><br><span class="line"><span class="javascript">		<span class="built_in">document</span>.addEventListener(<span class="string">&#x27;UniAppJSBridgeReady&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">		    uni.getEnv(<span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;  </span></span><br><span class="line"><span class="javascript">		        <span class="built_in">console</span>.log(<span class="string">&#x27;当前环境：&#x27;</span> + <span class="built_in">JSON</span>.stringify(res));  </span></span><br><span class="line"><span class="javascript">		    &#125;);</span></span><br><span class="line"><span class="javascript">        	<span class="comment">//向APP发送消息</span></span></span><br><span class="line"><span class="javascript">        	uni.postMessage(&#123;</span></span><br><span class="line"><span class="javascript">                <span class="attr">data</span>: &#123;</span></span><br><span class="line"><span class="javascript">                    <span class="attr">action</span>: <span class="string">&#x27;message&#x27;</span></span></span><br><span class="line"><span class="javascript">                &#125;</span></span><br><span class="line"><span class="javascript">            &#125;);</span></span><br><span class="line"><span class="javascript">            <span class="comment">//接收APP发送过来的消息</span></span></span><br><span class="line"><span class="javascript">            <span class="function"><span class="title">handleMessage</span>(<span class="params">evt</span>)</span> &#123;  </span></span><br><span class="line"><span class="javascript">                <span class="built_in">console</span>.log(<span class="string">&#x27;接收到的消息：&#x27;</span> + <span class="built_in">JSON</span>.stringify(evt.detail.data));  </span></span><br><span class="line"><span class="javascript">            &#125;  </span></span><br><span class="line"><span class="javascript">		&#125;);</span></span><br><span class="line"><span class="javascript">	</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="uni页面："><a href="#uni页面：" class="headerlink" title="uni页面："></a>uni页面：</h2><p>这里为index.nvue页面(注意这个nvue，跟vue页面是有差别的，后面就是踩坑点之一)</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">	<span class="xml"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">&quot;webview-box&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">		<span class="tag">&lt;<span class="name">web-view</span> <span class="attr">ref</span>=<span class="string">&quot;webview&quot;</span> <span class="attr">class</span>=<span class="string">&quot;webview&quot;</span> <span class="attr">src</span>=<span class="string">&quot;../../static/index.html&quot;</span> @<span class="attr">onPostMessage</span>=<span class="string">&quot;handleMessage&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">web-view</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">	<span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">		<span class="function"><span class="title">data</span>(<span class="params"></span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">			<span class="keyword">return</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">				<span class="attr">camera</span>: <span class="literal">null</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">				<span class="attr">progress</span>: <span class="number">0</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">				<span class="attr">wv</span>: <span class="literal">null</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">			&#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">		&#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">		<span class="function"><span class="title">onLoad</span>(<span class="params"></span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">			<span class="keyword">const</span> self = <span class="built_in">this</span>;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">			<span class="comment">// #ifdef APP-PLUS  </span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">			<span class="keyword">let</span> currentWebview = getCurrentPages()[<span class="number">0</span>];</span></span></span><br><span class="line"><span class="javascript"><span class="xml">			<span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">				self.wv = currentWebview.$getAppWebview();</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                 <span class="comment">//调用下面函数</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">             	 <span class="built_in">this</span>.handlePostMessage(<span class="string">&quot;消息&quot;</span>);</span></span></span><br><span class="line"><span class="javascript"><span class="xml">			&#125;, <span class="number">1000</span>);</span></span></span><br><span class="line"><span class="javascript"><span class="xml">			<span class="comment">// #endif</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">		&#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">         <span class="function"><span class="title">mouted</span>(<span class="params"></span>)</span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">         &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">		<span class="attr">methods</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">			<span class="comment">// 接收h5页面发来的键值判断需要执行的操作</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">			<span class="function"><span class="title">handleMessage</span>(<span class="params">evt</span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">				<span class="built_in">console</span>.log(<span class="string">&quot;postMessage: &quot;</span>, evt)</span></span></span><br><span class="line"><span class="javascript"><span class="xml">			&#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="comment">// 获取到对应webview(关键)通过evalJs(注意大小写，如果不知道evalJ是什么，可自行百度) 执行网页的函数，可对其进行传参，完成与网页的通讯</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="function"><span class="title">handlePostMessage</span>(<span class="params">res</span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="built_in">this</span>.$refs.webview.evalJs(<span class="string">`handleMessage(<span class="subst">$&#123;res&#125;</span>)`</span>);</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">		&#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">	&#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></span></span><br><span class="line"><span class="css"><span class="xml">	<span class="selector-class">.webview-box</span> &#123;</span></span></span><br><span class="line"><span class="css"><span class="xml">		<span class="attribute">position</span>: absolute;</span></span></span><br><span class="line"><span class="css"><span class="xml">		<span class="attribute">left</span>: <span class="number">0px</span>;</span></span></span><br><span class="line"><span class="css"><span class="xml">		<span class="attribute">right</span>: <span class="number">0px</span>;</span></span></span><br><span class="line"><span class="css"><span class="xml">		<span class="attribute">top</span>: <span class="number">0px</span>;</span></span></span><br><span class="line"><span class="css"><span class="xml">		<span class="attribute">bottom</span>: <span class="number">0px</span>;</span></span></span><br><span class="line"><span class="css"><span class="xml">	&#125;</span></span></span><br><span class="line"><span class="css"><span class="xml"></span></span></span><br><span class="line"><span class="css"><span class="xml">	<span class="selector-class">.webview</span> &#123;</span></span></span><br><span class="line"><span class="css"><span class="xml">		<span class="attribute">flex</span>: <span class="number">1</span>;</span></span></span><br><span class="line"><span class="css"><span class="xml">	&#125;</span></span></span><br><span class="line"><span class="css"><span class="xml"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>​        好了，是不是觉得很简单，事实上也很简单，但是鄙人非出脑瘫，踩了两个巨坑。两个都是在uni的页面的，如果大伙也踩到的话，那恭喜了，看到了我。</p>
-<p>​        第一，我用的是nvue页面，nvue获取webview窗口的方式是与普通vue获取webview的方式不一样的，这一步非常关键，如果获取不正确就算你以下写的东西是正确的也没有效果，具体是什么原理我也没深究，以后懂了再更好了，先实现业务。具体获取方法看案例，自己console一下看看要获取的是哪个webview，因为如果大伙的项目是有自定义导航栏获取其他nuve组件的话也算是一个webview。</p>
-<p>​        第二个坑就是，一定要用在uni的webview组件上使用<code>@onPostMessage</code>这个方法进行消息的监听，我当时也不知道犯了什么病，我用的是message，老半天调不出。message只有在特定的情况下才会接收到网页的消息，比如你执行了返回或着其他的特定场景操作的时候，具体可以看官网给出的。踩坑记录就到这啦，希望能帮助到大伙。</p>
-<ul>
-<li>参考资料：[1] <a href="https://ask.dcloud.net.cn/article/35083">dcloud社区</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>前端</category>
-        <category>uniapp</category>
-      </categories>
-      <tags>
-        <tag>uniapp</tag>
-        <tag>webview</tag>
       </tags>
   </entry>
   <entry>
